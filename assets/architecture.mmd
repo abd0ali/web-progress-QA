@@ -1,0 +1,13 @@
+flowchart LR
+  subgraph VESSEL["Vessel – Data Uploader"]
+    DB[("Project / Logging /<br/>Processing / SC DBs")] --> DMT["Data Migration Tool<br/>(upload every N min)"]
+  end
+  subgraph OFFICE["Office server – real IP"]
+    API["IIS: Web API + SignalR hub"] --> WDB[("Web Progress DB")]
+    SITE["Web Progress site"] --> API
+  end
+  DMT -- "HTTP over internet" --> API
+  CLIENT["Client / third-party browser"] -- "http://&lt;server&gt;/&lt;app&gt;" --> SITE
+  classDef navy fill:#1F3864,color:#fff,stroke:#1F3864;
+  classDef gold fill:#FFF7E0,stroke:#C9A227,color:#1F3864;
+  class DMT,API,SITE navy; class DB,WDB,CLIENT gold;
